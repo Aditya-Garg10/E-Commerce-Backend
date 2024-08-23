@@ -13,7 +13,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({
-  origin:["http://localhost:3000","http://localhost:5173","http://192.168.0.108:3000"],
+  origin:["https://e-commerce-frontend-ugjc.onrender.com","http://localhost:5173","http://192.168.0.108:3000"],
   methods:["GET","POST","DELETE","PUT","PATCH"],
   credentials: true,
 }))
@@ -40,7 +40,7 @@ app.use(cors({
 //   next();
 // });
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000','http://192.168.0.108:3000'];
+const allowedOrigins = ['http://localhost:5173', 'https://e-commerce-frontend-ugjc.onrender.com','http://192.168.0.108:3000'];
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
