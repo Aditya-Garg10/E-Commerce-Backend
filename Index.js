@@ -13,12 +13,14 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({
-  origin:["https://e-commerce-frontend-ugjc.onrender.com","http://localhost:5173","http://192.168.0.108:3000"],
+  origin:["https://e-commerce-frontend-ugjc.onrender.com","https://e-commerce-admin-44e9.onrender.com","http://192.168.0.108:3000"],
   methods:["GET","POST","DELETE","PUT","PATCH"],
   credentials: true,
 }))
 
 //Qpoc9jBMtFz53AlK
+
+
 
 
 
@@ -40,7 +42,7 @@ app.use(cors({
 //   next();
 // });
 
-const allowedOrigins = ['http://localhost:5173', 'https://e-commerce-frontend-ugjc.onrender.com','http://192.168.0.108:3000'];
+const allowedOrigins = ['https://e-commerce-admin-44e9.onrender.com', 'https://e-commerce-frontend-ugjc.onrender.com','http://192.168.0.108:3000'];
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
