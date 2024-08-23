@@ -114,7 +114,7 @@ app.post('/upload', upload.array('images', 4), async(req, res) => {
     try {
      
       const fileLinks = req.files.map(file => (
-        `http://localhost:8000/images/${file.filename}`
+        `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
       ));
 
       const {name,category,details,description,tags,new_price,old_price} = req.body
