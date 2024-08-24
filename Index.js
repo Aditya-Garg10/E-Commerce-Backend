@@ -55,9 +55,7 @@ app.use("/upload",express.static(path.join(__dirname)))
 app.use("*",(req,res)=>res.sendFile())
 
 const storage = multer.diskStorage({
-  destination : (req,res,cb) =>{
-    cb(null,tempDir)
-  },
+  destination: "upload/images",
   filename: (req, file, cb) => {
     return cb(
       null,
