@@ -60,7 +60,8 @@ app.use((req, res, next) => {
 
 app.use("/",userRoute)
 app.use("/",productRoute)
-app.use('/images',express.static('upload/images'))
+// app.use('/images',express.static('upload/images'))
+app.use('/images',express.static(path.join(__dirname,'upload/images')))
 
 const storage = multer.diskStorage({
     destination: './upload/images',
@@ -68,9 +69,6 @@ const storage = multer.diskStorage({
       return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`); // Appending extension
     }
   });
-
-  
- 
   const upload = multer({
     dest : path.join(__dirname,"/tmp/uploads/profiles"),
     storage: storage,
@@ -87,9 +85,6 @@ const storage = multer.diskStorage({
       }
     }
   });
-
-  
-  
  
 // Endpoint to upload up to 4 images
 app.post('/upload', upload.array('images', 4), async(req, res) => {
