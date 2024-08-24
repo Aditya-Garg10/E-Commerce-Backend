@@ -49,7 +49,7 @@ app.use("/", productRoute);
 app.use("/images", express.static("upload/images"));
 
 
-const __dirname = path.resolve()
+
 app.use("/upload",express.static(path.join(__dirname)))
 
 app.use("*",(req,res)=>res.sendFile())
