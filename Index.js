@@ -49,7 +49,6 @@ app.use("/", productRoute);
 app.use("/images", express.static("upload/images"));
 
 
-
 const storage = multer.diskStorage({
   destination: "upload/images",
   filename: (req, file, cb) => {
