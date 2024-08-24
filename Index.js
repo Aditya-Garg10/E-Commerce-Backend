@@ -61,7 +61,6 @@ app.use((req, res, next) => {
 app.use("/",userRoute)
 app.use("/",productRoute)
 app.use('/images',express.static('upload/images'))
-// app.use('/images',express.static(path.join(__dirname,'upload/images')))
 
 const storage = multer.diskStorage({
     destination: './upload/images',
