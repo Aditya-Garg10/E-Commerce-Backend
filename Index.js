@@ -8,6 +8,8 @@ const userRoute = require("./routes/user");
 const productRoute = require("./routes/Product");
 const Product = require("./model/product");
 
+
+
 const app = express();
 
 app.use(express.json());
@@ -24,23 +26,6 @@ app.use(
 );
 
 //Qpoc9jBMtFz53AlK
-
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin',"http://localhost:5173"); // Update to match your client's domain
-//   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-//   res.header('Access-Control-Allow-Credentials', 'true'); // Allow cookies to be sent
-//   next();
-// });
-
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin',"http://localhost:5173"); // Update to match your client's domain
-//   res.header('Access-Control-Allow-Origin',"http://localhost:3000"); // Update to match your client's domain
-//   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-//   res.header('Access-Control-Allow-Credentials', 'true'); // Allow cookies to be sent
-//   next();
-// });
 
 const allowedOrigins = [
   "https://e-commerce-admin-44e9.onrender.com",
@@ -63,8 +48,16 @@ app.use("/", userRoute);
 app.use("/", productRoute);
 app.use("/images", express.static("upload/images"));
 
+
+const __dirname = path.resolve()
+app.use("/upload",express.static(path.join(__dirname)))
+
+app.use("*",(req,res)=>res.sendFile())
+
 const storage = multer.diskStorage({
-  destination: "upload/images",
+  destination : (req,res,cb) =>{
+    cb(null,tempDir)
+  },
   filename: (req, file, cb) => {
     return cb(
       null,
