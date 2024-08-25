@@ -135,24 +135,41 @@ const upload = multer({
   },
 });
 
-const uploadToFirebase = async (file)=>{
-  const blob = bucket.file(`${Date.now()}_${file.originalname}`);
-  const blobStream = blob.createWriteStream({
-    resumable:false,
-    contentType : file.mimetype,
-  })
-  return new Promise((resolve,reject)=>{
-    blobStream.on('error',(err)=>{
-      reject(err);
-    })
-    blobStream.on('finish',()=>{
-      const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/${blob.name}`
-      resolve(publicUrl)
-    })
 
-    blobStream.end(file.buffer)
-  })
-};
+  const uploadToFirebase = async(file) => {
+    const bucket = admin.storage().bucket();
+    const uploadResponse = await bucket.upload(file.path, {
+      destination: `images/${file.originalname}`,
+      public: true,
+      metadata: {
+        contentType: file.mimetype,
+      },
+    });    
+    return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(uploadResponse[0].name)}?alt=media`;
+  };
+  
+  const fileLinks = await Promise.all(
+    req.files.map(async (file) => {
+      return await uploadToFirebase(file);
+    })
+  );
+  // const blob = bucket.file(`${Date.now()}_${file.originalname}`);
+  // const blobStream = blob.createWriteStream({
+  //   resumable:false,
+  //   contentType : file.mimetype,
+  // })
+  // return new Promise((resolve,reject)=>{
+  //   blobStream.on('error',(err)=>{
+  //     reject(err);
+  //   })
+  //   blobStream.on('finish',()=>{
+  //     const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/${blob.name}`
+  //     resolve(publicUrl)
+  //   })
+
+  //   blobStream.end(file.buffer)
+  // })
+
 
 // Endpoint to upload up to 4 images
 app.post("/upload", upload.array("images", 4), async (req, res) => {
@@ -175,9 +192,9 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
     //     `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
     // );
 
-    const fileLinks = await Promise.all(req.files.map(file=>     
-      uploadToFirebase(file)
-    ))
+    // const fileLinks = await Promise.all(req.files.map(file=>     
+    //   uploadToFirebase(file)
+    // ))
 
     // https://firebasestorage.googleapis.com/v0/b/e-commerce-backend-bfa60.appspot.com/o/1724573798353_1720202493_6801435.webp?alt=media&token=b4f3c8c6-c429-40b1-a756-c14af8af13b3
     const { name, category, details, description, tags, new_price, old_price } =
