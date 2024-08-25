@@ -176,8 +176,11 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
     // );
 
     const fileLinks = await Promise.all(req.files.map(file=>
+      `https://firebasestorage.googleapis.com/v0/b/e-commerce-backend-bfa60.appspot.com/0/${encodeURIComponent(file.originalname)}?alt=media`,
       uploadToFirebase(file)
     ))
+
+    // https://firebasestorage.googleapis.com/v0/b/e-commerce-backend-bfa60.appspot.com/o/1724573798353_1720202493_6801435.webp?alt=media&token=b4f3c8c6-c429-40b1-a756-c14af8af13b3
     const { name, category, details, description, tags, new_price, old_price } =
       req.body;
     const product = new Product.Product({
