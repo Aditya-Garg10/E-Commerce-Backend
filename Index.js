@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 const userRoute = require("./routes/user");
 const productRoute = require("./routes/Product");
 const Product = require("./model/product");
-
 const admin = require("firebase-admin")
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
 
