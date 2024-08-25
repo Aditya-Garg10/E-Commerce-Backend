@@ -146,7 +146,7 @@ const uploadToFirebase = async (file)=>{
       reject(err);
     })
     blobStream.on('finish',()=>{
-      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/${blob.name}`
       resolve(publicUrl)
     })
 
@@ -175,8 +175,7 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
     //     `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
     // );
 
-    const fileLinks = await Promise.all(req.files.map(file=>
-      `https://firebasestorage.googleapis.com/v0/b/e-commerce-backend-bfa60.appspot.com/0/${encodeURIComponent(file.originalname)}?alt=media`,
+    const fileLinks = await Promise.all(req.files.map(file=>     
       uploadToFirebase(file)
     ))
 
