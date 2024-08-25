@@ -64,7 +64,6 @@ app.use("/", userRoute);
 app.use("/", productRoute);
 // app.use("/images", express.static(bucket.file(image)));
 
-const filename = req.params.filename;
 
 
 // const { Storage } = require('@google-cloud/storage');
@@ -74,18 +73,19 @@ const filename = req.params.filename;
 // const objectName = 'your-object-name';
 
 // async function getObject() {
-//   try {
+  //   try {
 //     const [file] = await storage.bucket(bucketName).file(objectName).get();
 //     console.log(`File ${objectName} contents:`);
 //     console.log(file[0]);
 //   } catch (err) {
-//     console.error('Error getting file:', err);
-//   }
-// }
-
-// getObject();
-
-app.use("/images",async(req,res)=>{
+  //     console.error('Error getting file:', err);
+  //   }
+  // }
+  
+  // getObject();
+  
+  app.use("/images",async(req,res)=>{
+  const filename = req.params.filename;
   try {
     // Get the file from Firebase Storage
     const file = bucket.file(filename);
