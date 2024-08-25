@@ -8,9 +8,21 @@ const userRoute = require("./routes/user");
 const productRoute = require("./routes/Product");
 const Product = require("./model/product");
 
+const admin = require("firebase-admin")
+const serviceAccount = require("./e-commerce-backend-bfa60-firebase-adminsdk-j4zn4-eca2efd928.json")
+
+admin.initializeApp({
+  credential:
+  admin.credential.cert(serviceAccount)
+  ,
+  storageBucket : 'gs://e-commerce-backend-bfa60.appspot.com',
+})
 
 
 const app = express();
+
+const db = admin.firestore();
+const bucket = admin.storage().bucket()
 
 app.use(express.json());
 app.use(
@@ -26,6 +38,8 @@ app.use(
 );
 
 //Qpoc9jBMtFz53AlK
+
+
 
 const allowedOrigins = [
   "https://e-commerce-admin-44e9.onrender.com",
@@ -59,7 +73,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB file size limit
   fileFilter: function (req, file, cb) {
     const fileTypes = /jpeg|jpg|png|webp/;
@@ -76,6 +90,25 @@ const upload = multer({
   },
 });
 
+const uploadToFirebase = async (file)=>{
+  const blob = bucket.file(`${Date.now()}_${file.originalname}`);
+  const blobStream = blob.createWriteStream({
+    resumable:false,
+    contentType : file.mimetype,
+  })
+  return new Promise((resolve,reject)=>{
+    blobStream.on('error',(err)=>{
+      reject(err);
+    })
+    blobStream.on('finish',()=>{
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      resolve(publicUrl)
+    })
+
+    blobStream.end(file.buffer)
+  })
+};
+
 // Endpoint to upload up to 4 images
 app.post("/upload", upload.array("images", 4), async (req, res) => {
   let products = await Product.Product.find({});
@@ -87,19 +120,19 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
   } else {
     id = 1;
   }
-
   console.log(req.files);
-
   // if (req.files.length !== 1) {
   //   return res.status(400).send('No files were uploaded.');
   // }
-
   try {
-    const fileLinks = req.files.map(
-      (file) =>
-        `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
-    );
+    // const fileLinks = req.files.map(
+    //   (file) =>
+    //     `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
+    // );
 
+    const fileLinks = await Promise.all(req.files.map(file=>
+      uploadToFirebase(file)
+    ))
     const { name, category, details, description, tags, new_price, old_price } =
       req.body;
     const product = new Product.Product({
