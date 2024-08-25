@@ -62,7 +62,31 @@ app.use((req, res, next) => {
 
 app.use("/", userRoute);
 app.use("/", productRoute);
-app.use("/images", express.static("upload/images"));
+app.use("/images", express.static(bucket.file(image)));
+
+const filename = req.params.filename;
+
+// app.use("/images",async(req,res)=>{
+//   try {
+//     // Get the file from Firebase Storage
+//     const file = bucket.file(filename);
+
+//     // Download the file
+//     const [data] = await file.get();
+
+//     // Set the content type based on the file extension
+//     const contentType = file.metadata.contentType;
+//     res.setHeader('Content-Type', contentType);
+
+//     // Send the image data to the client
+//     res.send(data);
+
+//   } catch (error) {
+//     console.error('Error fetching image:', error);
+//     res.status(500).send('Error fetching image');
+//   }
+// });
+
 
 
 const storage = multer.diskStorage({
