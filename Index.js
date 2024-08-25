@@ -117,8 +117,9 @@ const storage = multer.diskStorage({
     ); // Appending extension
   },
 });
+
 const upload = multer({
-  storage: multer.memoryStorage(),
+  storage: storage,
   limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB file size limit
   fileFilter: function (req, file, cb) {
     const fileTypes = /jpeg|jpg|png|webp/;
@@ -203,7 +204,7 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
         return await uploadToFirebase(file);
       })
     );
-    
+
     const { name, category, details, description, tags, new_price, old_price } =
       req.body;
     const product = new Product.Product({
