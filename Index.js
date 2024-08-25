@@ -62,30 +62,49 @@ app.use((req, res, next) => {
 
 app.use("/", userRoute);
 app.use("/", productRoute);
-app.use("/images", express.static(bucket.file(image)));
+// app.use("/images", express.static(bucket.file(image)));
 
 const filename = req.params.filename;
 
-// app.use("/images",async(req,res)=>{
+
+// const { Storage } = require('@google-cloud/storage');
+
+// const storage = new Storage();
+// const bucketName = 'your-bucket-name';
+// const objectName = 'your-object-name';
+
+// async function getObject() {
 //   try {
-//     // Get the file from Firebase Storage
-//     const file = bucket.file(filename);
-
-//     // Download the file
-//     const [data] = await file.get();
-
-//     // Set the content type based on the file extension
-//     const contentType = file.metadata.contentType;
-//     res.setHeader('Content-Type', contentType);
-
-//     // Send the image data to the client
-//     res.send(data);
-
-//   } catch (error) {
-//     console.error('Error fetching image:', error);
-//     res.status(500).send('Error fetching image');
+//     const [file] = await storage.bucket(bucketName).file(objectName).get();
+//     console.log(`File ${objectName} contents:`);
+//     console.log(file[0]);
+//   } catch (err) {
+//     console.error('Error getting file:', err);
 //   }
-// });
+// }
+
+// getObject();
+
+app.use("/images",async(req,res)=>{
+  try {
+    // Get the file from Firebase Storage
+    const file = bucket.file(filename);
+
+    // Download the file
+    const [data] = await file.get();
+
+    // Set the content type based on the file extension
+    const contentType = file.metadata.contentType;
+    res.setHeader('Content-Type', contentType);
+
+    // Send the image data to the client
+    res.send(data);
+
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    res.status(500).send('Error fetching image');
+  }
+});
 
 
 
