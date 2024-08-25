@@ -9,7 +9,7 @@ const productRoute = require("./routes/Product");
 const Product = require("./model/product");
 
 const admin = require("firebase-admin")
-const serviceAccount = require("./e-commerce-backend-bfa60-firebase-adminsdk-j4zn4-eca2efd928.json")
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
 
 admin.initializeApp({
   credential:
