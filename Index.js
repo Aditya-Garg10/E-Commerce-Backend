@@ -33,7 +33,7 @@ app.use(
       "https://e-commerce-admin-delta-five.vercel.app",      
       "http://192.168.0.108:3000",
       "https://e-commerce-frontend-5hjv.vercel.app",
-      "https://e-commerce-backend-ssjr.onrender.com"
+      
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
@@ -49,7 +49,7 @@ const allowedOrigins = [
   "https://e-commerce-admin-delta-five.vercel.app",
   "http://localhost:3000",
   "https://e-commerce-frontend-5hjv.vercel.app",
-  "https://e-commerce-backend-ssjr.onrender.com"
+  
 ];
 
 app.use((req, res, next) => {
@@ -234,12 +234,12 @@ const uploadToFirebase = async(file) => {
   }
 });
 
-app.use(express.static(path.join(__dirname,'/public/build')))
+// app.use(express.static(path.join(__dirname,'/public/build')))
 
-app.get('*',(req,res)=>{
-  res.sendFile(path.join(__dirname,
-    "/public/build/index.html"))
-})
+// app.get('*',(req,res)=>{
+//   res.sendFile(path.join(__dirname,
+//     "/public/build/index.html"))
+// })
 
 mongoose.connect(
   "mongodb+srv://adityagarg646:Qpoc9jBMtFz53AlK@cluster1.ro01vgx.mongodb.net/E-Commerce",
