@@ -66,10 +66,7 @@ app.use("/", productRoute);
 // app.use("/images", express.static(bucket.file(image)));
 
 app.use(express.static(path.resolve(__dirname,'public')))
-app.get('*',(req,res)=>{
-  res.sendFile(path.resolve(__dirname,
-    "public","index.html"))
-})
+
 // const { Storage } = require('@google-cloud/storage');
 
 // const storage = new Storage();
@@ -235,6 +232,12 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
     console.log(error);
   }
 });
+
+
+app.get('*',(req,res)=>{
+  res.sendFile(path.resolve(__dirname,
+    "public","index.html"))
+})
 
 mongoose.connect(
   "mongodb+srv://adityagarg646:Qpoc9jBMtFz53AlK@cluster1.ro01vgx.mongodb.net/E-Commerce",
