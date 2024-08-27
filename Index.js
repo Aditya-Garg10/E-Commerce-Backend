@@ -30,8 +30,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "https://e-commerce-frontend-ugjc.onrender.com",
-      "https://e-commerce-admin-44e9.onrender.com",
+      "https://e-commerce-admin-delta-five.vercel.app",      
       "http://192.168.0.108:3000",
       "https://e-commerce-frontend-5hjv.vercel.app"
     ],
@@ -44,10 +43,9 @@ app.use(
 
 
 
-const allowedOrigins = [
-  "https://e-commerce-admin-44e9.onrender.com",
-  "https://e-commerce-frontend-ugjc.onrender.com",
+const allowedOrigins = [  
   "http://192.168.0.108:3000",
+  "https://e-commerce-admin-delta-five.vercel.app",
   "http://localhost:3000",
   "https://e-commerce-frontend-5hjv.vercel.app"
 ];
