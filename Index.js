@@ -67,7 +67,7 @@ app.use("/", productRoute);
 
 app.get('*',(req,res)=>{
   res.sendFile(path.resolve(__dirname,
-    "client","build","index.html"))
+    "frontend","build","index.html"))
 })
 
 // const { Storage } = require('@google-cloud/storage');
