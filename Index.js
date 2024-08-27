@@ -32,7 +32,8 @@ app.use(
     origin: [
       "https://e-commerce-admin-delta-five.vercel.app",      
       "http://192.168.0.108:3000",
-      "https://e-commerce-frontend-5hjv.vercel.app"
+      "https://e-commerce-frontend-5hjv.vercel.app",
+      "https://e-commerce-backend-ssjr.onrender.com"
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
@@ -47,7 +48,8 @@ const allowedOrigins = [
   "http://192.168.0.108:3000",
   "https://e-commerce-admin-delta-five.vercel.app",
   "http://localhost:3000",
-  "https://e-commerce-frontend-5hjv.vercel.app"
+  "https://e-commerce-frontend-5hjv.vercel.app",
+  "https://e-commerce-backend-ssjr.onrender.com"
 ];
 
 app.use((req, res, next) => {
