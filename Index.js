@@ -33,6 +33,7 @@ app.use(
       "https://e-commerce-frontend-ugjc.onrender.com",
       "https://e-commerce-admin-44e9.onrender.com",
       "http://192.168.0.108:3000",
+      "https://e-commerce-frontend-5hjv.vercel.app"
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
@@ -47,7 +48,8 @@ const allowedOrigins = [
   "https://e-commerce-admin-44e9.onrender.com",
   "https://e-commerce-frontend-ugjc.onrender.com",
   "http://192.168.0.108:3000",
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "https://e-commerce-frontend-5hjv.vercel.app"
 ];
 
 app.use((req, res, next) => {
