@@ -65,7 +65,6 @@ app.use("/", userRoute);
 app.use("/", productRoute);
 // app.use("/images", express.static(bucket.file(image)));
 
-app.use(express.static(path.resolve(__dirname,'public')))
 
 // const { Storage } = require('@google-cloud/storage');
 
@@ -75,32 +74,32 @@ app.use(express.static(path.resolve(__dirname,'public')))
 
 // async function getObject() {
   //   try {
-//     const [file] = await storage.bucket(bucketName).file(objectName).get();
-//     console.log(`File ${objectName} contents:`);
-//     console.log(file[0]);
-//   } catch (err) {
-  //     console.error('Error getting file:', err);
-  //   }
-  // }
-  
-  // getObject();
-  
-  app.use("/images",async(req,res)=>{
-  const filename = req.params.filename;
-  try {
-    // Get the file from Firebase Storage
-    const file = bucket.file(filename);
+    //     const [file] = await storage.bucket(bucketName).file(objectName).get();
+    //     console.log(`File ${objectName} contents:`);
+    //     console.log(file[0]);
+    //   } catch (err) {
+      //     console.error('Error getting file:', err);
+      //   }
+      // }
+      
+      // getObject();
+      
+      app.use("/images",async(req,res)=>{
+        const filename = req.params.filename;
+        try {
+          // Get the file from Firebase Storage
+          const file = bucket.file(filename);
 
-    // Download the file
-    const [data] = await file.get();
-
+          // Download the file
+          const [data] = await file.get();
+          
     // Set the content type based on the file extension
     const contentType = file.metadata.contentType;
     res.setHeader('Content-Type', contentType);
 
     // Send the image data to the client
     res.send(data);
-
+    
   } catch (error) {
     console.error('Error fetching image:', error);
     res.status(500).send('Error fetching image');
@@ -128,7 +127,7 @@ const upload = multer({
     const extname = fileTypes.test(
       path.extname(file.originalname).toLowerCase()
     );
-
+    
     if (mimetype && extname) {
       return cb(null, true);
     } else {
@@ -138,12 +137,12 @@ const upload = multer({
 });
 
 
-  const uploadToFirebase = async(file) => {
-    const bucket = admin.storage().bucket();
-    const uploadResponse = await bucket.upload(file.path, {
-      destination: `images/${file.originalname}`,
-      public: true,
-      metadata: {
+const uploadToFirebase = async(file) => {
+  const bucket = admin.storage().bucket();
+  const uploadResponse = await bucket.upload(file.path, {
+    destination: `images/${file.originalname}`,
+    public: true,
+    metadata: {
         contentType: file.mimetype,
       },
     });    
@@ -153,61 +152,61 @@ const upload = multer({
   };
   
   
- 
+  
   // const blob = bucket.file(`${Date.now()}_${file.originalname}`);
   // const blobStream = blob.createWriteStream({
-  //   resumable:false,
-  //   contentType : file.mimetype,
-  // })
-  // return new Promise((resolve,reject)=>{
-  //   blobStream.on('error',(err)=>{
-  //     reject(err);
-  //   })
-  //   blobStream.on('finish',()=>{
-  //     const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/${blob.name}`
+    //   resumable:false,
+    //   contentType : file.mimetype,
+    // })
+    // return new Promise((resolve,reject)=>{
+      //   blobStream.on('error',(err)=>{
+        //     reject(err);
+        //   })
+        //   blobStream.on('finish',()=>{
+          //     const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/${blob.name}`
   //     resolve(publicUrl)
   //   })
-
+  
   //   blobStream.end(file.buffer)
   // })
-
-
-// Endpoint to upload up to 4 images
-app.post("/upload", upload.array("images", 4), async (req, res) => {
-  let products = await Product.Product.find({});
-  let id;
-  if (products.length > 0) {
-    let last_product_array = products.slice(-1);
-    let last_product = last_product_array[0];
-    id = last_product.id + 1;
-  } else {
-    id = 1;
-  }
-  console.log(req.files);
-  // if (req.files.length !== 1) {
-  //   return res.status(400).send('No files were uploaded.');
-  // }
-  try {
+  
+  
+  // Endpoint to upload up to 4 images
+  app.post("/upload", upload.array("images", 4), async (req, res) => {
+    let products = await Product.Product.find({});
+    let id;
+    if (products.length > 0) {
+      let last_product_array = products.slice(-1);
+      let last_product = last_product_array[0];
+      id = last_product.id + 1;
+    } else {
+      id = 1;
+    }
+    console.log(req.files);
+    // if (req.files.length !== 1) {
+      //   return res.status(400).send('No files were uploaded.');
+      // }
+      try {
     // const fileLinks = req.files.map(
-    //   (file) =>
+      //   (file) =>
     //     `https://e-commerce-backend-ssjr.onrender.com/images/${file.filename}`
     // );
-
+    
     // const fileLinks = await Promise.all(req.files.map(file=>     
-    //   uploadToFirebase(file)
+      //   uploadToFirebase(file)
     // ))
-
+    
     // https://firebasestorage.googleapis.com/v0/b/e-commerce-backend-bfa60.appspot.com/o/1724573798353_1720202493_6801435.webp?alt=media&token=b4f3c8c6-c429-40b1-a756-c14af8af13b3
-
-
+    
+    
     const fileLinks = await Promise.all(
       req.files.map(async (file) => {
         return await uploadToFirebase(file);
       })
     );
-
+    
     const { name, category, details, description, tags, new_price, old_price } =
-      req.body;
+    req.body;
     const product = new Product.Product({
       id: id,
       name,
@@ -219,7 +218,7 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
       old_price,
       image: fileLinks,
     });
-
+    
     await product.save();
     console.log(product);
     res.status(200).json({
@@ -233,10 +232,11 @@ app.post("/upload", upload.array("images", 4), async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname,'/public/build')))
 
 app.get('*',(req,res)=>{
-  res.sendFile(path.resolve(__dirname,
-    "public","index.html"))
+  res.sendFile(path.join(__dirname,
+    "/public/build/index.html"))
 })
 
 mongoose.connect(
