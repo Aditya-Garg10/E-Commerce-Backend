@@ -33,6 +33,7 @@ app.use(
       "https://e-commerce-admin-delta-five.vercel.app",      
       "http://192.168.0.108:3000",
       "https://e-commerce-frontend-5hjv.vercel.app",
+      "https://portfolio-nine-lac-78.vercel.app"
       
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
@@ -49,6 +50,7 @@ const allowedOrigins = [
   "https://e-commerce-admin-delta-five.vercel.app",
   "http://localhost:3000",
   "https://e-commerce-frontend-5hjv.vercel.app",
+  "https://portfolio-nine-lac-78.vercel.app"
   
 ];
 
