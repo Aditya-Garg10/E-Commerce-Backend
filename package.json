@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "e commerce application",
-  "main": "Index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon Index.js"
+    "start": "nodemon index.js"
   },
   "author": "Aditya",
   "license": "ISC",
